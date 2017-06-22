@@ -19,6 +19,10 @@ RUN set -x; \
         && apt-get -y install -f --no-install-recommends \
         && apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false -o APT::AutoRemove::SuggestsImportant=false npm \
         && rm -rf /var/lib/apt/lists/* wkhtmltox.deb \
+
+RUN set -x;\
+		apt-get install -y --no-install-recommends build-essential libssl-dev libffi-dev python-dev \
+		&& pip install -U pip \
         && pip install psycogreen==1.0 \
         && pip install cryptography \
         && pip install wechatpy \
