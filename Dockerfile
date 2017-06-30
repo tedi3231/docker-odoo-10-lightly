@@ -33,8 +33,9 @@ RUN set -x;\
 RUN set -x; \
         curl -o odoo.zip -SL https://github.com/tedi3231/odoo_lightly/archive/master.zip \
         && unzip odoo.zip \
-        && python odoo/setup.py install \ 
-        && rm -rf odoo.zip
+        && python odoo_lightly-master/setup.py install \ 
+        && rm -rf odoo.zip \
+		&& rm -rf odoo_lightly-master
 
 # Copy entrypoint script and Odoo configuration file
 COPY ./entrypoint.sh /
