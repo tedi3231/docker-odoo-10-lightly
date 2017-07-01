@@ -33,8 +33,9 @@ RUN curl -o odoo.zip -SL https://github.com/tedi3231/odoo_lightly/archive/master
         && unzip -q odoo.zip 
 
 RUN pip install wdb odoo_lightly-master/  \
-	&& rm -rf odoo.zip \
-	&& rm -rf odoo_lightly-master
+	&& rm -rf odoo.zip \ 
+	&& mv odoo_lightly-master /var/odoo
+#	&& rm -rf odoo_lightly-master
 
 # Copy entrypoint script and Odoo configuration file
 COPY ./entrypoint.sh /
