@@ -39,7 +39,6 @@ RUN pip install wdb odoo_lightly-master/  \
 # Copy entrypoint script and Odoo configuration file
 COPY ./entrypoint.sh /
 COPY ./odoo.conf /etc/odoo/
-
 RUN useradd -m -d /var/lib/odoo -s /bin/false -u 104 -g 33 odoo
 RUN chown odoo /etc/odoo/odoo.conf
 
