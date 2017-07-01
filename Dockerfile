@@ -32,7 +32,7 @@ RUN	apt-get update \
 RUN curl -o odoo.zip -SL https://github.com/tedi3231/odoo_lightly/archive/master.zip \
         && unzip -q odoo.zip 
 
-RUN pip install wdb odoo_lightly-master/ 
+RUN pip install wdb odoo_lightly-master/  \
 	&& rm -rf odoo.zip \
 	&& rm -rf odoo_lightly-master
 
