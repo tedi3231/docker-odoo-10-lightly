@@ -40,6 +40,7 @@ RUN pip install wdb odoo_lightly-master/  \
 COPY ./entrypoint.sh /
 COPY ./odoo.conf /etc/odoo/
 RUN chown root /etc/odoo/odoo.conf
+RUN chown root /entrypoint.sh 
 
 # Mount /var/lib/odoo to allow restoring filestore and /mnt/extra-addons for users addons
 RUN mkdir -p /mnt/extra-addons \
