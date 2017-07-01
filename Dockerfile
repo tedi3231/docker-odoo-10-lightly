@@ -39,12 +39,13 @@ RUN pip install wdb odoo_lightly-master/  \
 # Copy entrypoint script and Odoo configuration file
 COPY ./entrypoint.sh /
 COPY ./odoo.conf /etc/odoo/
-RUN chown root /etc/odoo/odoo.conf
-RUN chown root /entrypoint.sh 
+
+RUN useradd -m -d /var/lib/odoo -s /bin/false -u 104 -g 33 odoo
+RUN chown odoo /etc/odoo/odoo.conf
 
 # Mount /var/lib/odoo to allow restoring filestore and /mnt/extra-addons for users addons
 RUN mkdir -p /mnt/extra-addons \
-        && chown -R root /mnt/extra-addons
+        && chown -R odoo /mnt/extra-addons
 VOLUME ["/var/lib/odoo", "/mnt/extra-addons"]
 
 # Expose Odoo services
@@ -54,7 +55,7 @@ EXPOSE 8069 8071
 ENV ODOO_RC /etc/odoo/odoo.conf
 
 # Set default user when running the container
-USER root
+USER odoo
 
 ENTRYPOINT ["/entrypoint.sh"]
 CMD ["odoo"]
