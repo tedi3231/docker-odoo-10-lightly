@@ -40,18 +40,20 @@ RUN pip install wdb odoo_lightly-master/  \
 COPY ./entrypoint.sh /
 COPY ./odoo.conf /etc/odoo/
 
-RUN useradd -m -d /var/lib/odoo -s /bin/false -u 104 -g 33 odoo
+RUN useradd -m -d /var/lib/odoo -s /bin/false -u 104 -g www-data odoo
 RUN mkdir -p /var/odoo \
-	&& chown -R odoo /var/odoo \ 
+	&& chown -R odoo:www-data /var/odoo \ 
     && mv odoo_lightly-master/addons /var/odoo/ \
-	&& chown -R odoo /var/odoo \
+	&& chown -R odoo:www-data /var/odoo \
+	&& chmod 0750 /var/odoo \
 	&& rm -rf odoo_lightly-master
 
-RUN chown odoo /etc/odoo/odoo.conf
+RUN chown odoo:www-data /etc/odoo/odoo.conf \
+	&& chown 0640 /etc/odoo/odoo.conf
 
 # Mount /var/lib/odoo to allow restoring filestore and /mnt/extra-addons for users addons
 RUN mkdir -p /mnt/extra-addons \
-        && chown -R odoo /mnt/extra-addons
+        && chown -R odoo:www-data /mnt/extra-addons
 VOLUME ["/var/lib/odoo", "/mnt/extra-addons"]
 
 # Expose Odoo services
