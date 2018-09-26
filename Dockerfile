@@ -16,6 +16,7 @@ RUN	apt-get update \
 	&& apt-get install -y --no-install-recommends build-essential libsasl2-dev libldap2-dev libssl-dev libffi-dev python-dev \
 	&& pip install psycogreen==1.0 \
 	&& pip install -U pip \
+	&& pip install --upgrade pip setuptools \
 	&& pip install psycogreen==1.0 \
 	&& pip install cryptography \
 	&& pip install wechatpy \
@@ -39,7 +40,6 @@ RUN pip install wdb odoo_lightly-master/  \
 #	&& rm -rf odoo_lightly-master
 
 RUN apt-get install -y --no-install-recommends ttf-wqy-zenhei ttf-wqy-microhei
-RUN pip install --upgrade setuptools
 
 # Copy entrypoint script and Odoo configuration file
 COPY ./entrypoint.sh /
