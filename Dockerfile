@@ -35,7 +35,7 @@ RUN	apt-get update \
 RUN curl -o odoo.zip -SL https://gitee.com/tyibs/odoo_10_dev_lightly/repository/archive/master.zip \
         && unzip -q odoo.zip 
 
-RUN pip install wdb  odoo_10_dev_lightly-master/  \
+RUN pip install wdb  odoo_10_dev_lightly/  \
 	&& rm -rf odoo.zip  
 #	&& rm -rf odoo_lightly-master
 
@@ -48,10 +48,10 @@ COPY ./odoo.conf /etc/odoo/
 RUN useradd -m -d /var/lib/odoo -s /bin/false -u 104 -g www-data odoo
 RUN mkdir -p /var/odoo \
 	&& chown -R odoo:www-data /var/odoo \ 
-    && mv odoo_lightly-master/addons /var/odoo/ \
+    && mv odoo_lightly/addons /var/odoo/ \
 	&& chown -R odoo:www-data /var/odoo \
 	&& chmod 0750 /var/odoo \
-	&& rm -rf odoo_10_dev_lightly-master
+	&& rm -rf odoo_10_dev_lightly
 
 RUN chown odoo:www-data /etc/odoo/odoo.conf \
 	&& chown 0640 /etc/odoo/odoo.conf
