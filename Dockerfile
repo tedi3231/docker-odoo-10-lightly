@@ -39,7 +39,7 @@ RUN pip install wdb  odoo_10_dev_lightly/  \
 	&& rm -rf odoo.zip  
 #	&& rm -rf odoo_lightly-master
 
-RUN apt-get install -y --no-install-recommends ttf-wqy-zenhei ttf-wqy-microhei
+# RUN apt-get install -y --no-install-recommends ttf-wqy-zenhei ttf-wqy-microhei
 
 # Copy entrypoint script and Odoo configuration file
 COPY ./entrypoint.sh /
