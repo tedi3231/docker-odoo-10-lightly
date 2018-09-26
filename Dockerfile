@@ -29,7 +29,9 @@ RUN	apt-get update \
     && rm -rf /var/lib/apt/lists/* wkhtmltox.deb 
 
 # Install Odoo
-RUN curl -o odoo.zip -SL https://github.com/tedi3231/odoo_lightly/archive/master.zip \
+# RUN curl -o odoo.zip -SL https://github.com/tedi3231/odoo_lightly/archive/master.zip \
+#        && unzip -q odoo.zip 
+RUN curl -o odoo.zip -SL https://gitee.com/tyibs/odoo_10_dev_lightly/repository/archive/master.zip
         && unzip -q odoo.zip 
 
 RUN pip install wdb odoo_lightly-master/  \
