@@ -48,7 +48,7 @@ COPY ./odoo.conf /etc/odoo/
 RUN useradd -m -d /var/lib/odoo -s /bin/false -u 104 -g www-data odoo
 RUN mkdir -p /var/odoo \
 	&& chown -R odoo:www-data /var/odoo \ 
-    && mv odoo_lightly/addons /var/odoo/ \
+    && mv odoo_10_dev_lightly/addons /var/odoo/ \
 	&& chown -R odoo:www-data /var/odoo \
 	&& chmod 0750 /var/odoo \
 	&& rm -rf odoo_10_dev_lightly
