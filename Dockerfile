@@ -39,7 +39,7 @@ RUN curl -o odoo.zip -SL https://gitee.com/tyibs/odoo_10_dev_lightly/repository/
         && unzip -q odoo.zip 
 
 RUN pip install wdb odoo_10_dev_lightly/  \
-	&& rm -rf odoo.zip  
+	&& rm -rf odoo.zip
 
 ADD wqy-microhei.ttc /var/lib/odoo/.fonts/
 
@@ -69,11 +69,11 @@ RUN addgroup --system odoo
 RUN adduser --system --no-create-home --ingroup odoo odoo
 RUN mkdir -p /var/lib/odoo
 RUN mv odoo_10_dev_lightly/addons /var/lib/odoo/ 
-#RUN chmod -R 0777 /var/lib/odoo 
+RUN chmod -R 0777 /var/lib/odoo 
 RUN chown -R odoo:odoo /var/lib/odoo 
 RUN rm -rf odoo_10_dev_lightly
 
-RUN chown odoo:www-data /etc/odoo/odoo.conf \
+RUN chown odoo:odoo /etc/odoo/odoo.conf \
 	&& chmod -R 0640 /etc/odoo/odoo.conf
 # set fdfs client config permision
 RUN chown odoo:odoo /etc/fdfs/client.conf \
