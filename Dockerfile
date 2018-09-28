@@ -30,7 +30,7 @@ RUN	apt-get update \
     && rm -rf /var/lib/apt/lists/* wkhtmltox.deb 
 
 # 安装中文字体
-RUN apt-get install -y --no-install-recommends ttf-wqy-microhei ttf-wqy-zenhei
+# RUN apt-get install -y --no-install-recommends ttf-wqy-microhei ttf-wqy-zenhei
 
 # Install Odoo
 # RUN curl -o odoo.zip -SL https://github.com/tedi3231/odoo_lightly/archive/master.zip \
@@ -38,14 +38,20 @@ RUN apt-get install -y --no-install-recommends ttf-wqy-microhei ttf-wqy-zenhei
 RUN curl -o odoo.zip -SL https://gitee.com/tyibs/odoo_10_dev_lightly/repository/archive/master.zip \
         && unzip -q odoo.zip 
 
-RUN pip install wdb  odoo_10_dev_lightly/  \
+RUN pip install wdb odoo_10_dev_lightly/  \
 	&& rm -rf odoo.zip  
+
+ADD wqy-microhei.ttc /var/lib/odoo/.fonts/
 
 # 安装FDFS客户端驱动
 RUN curl -o fdfs.zip -SL https://gitee.com/tyibs/fdfs_client/repository/archive/master.zip \
         && unzip -q fdfs.zip 
-RUN python fdfs_client/setup.py install \
-    && rm -rf fdfs_client \
+RUN pwd
+WORKDIR fdfs_client
+
+RUN python setup.py install
+WORKDIR /
+RUN rm -rf fdfs_client \
     && rm -rf fdfs.zip
 #	&& rm -rf odoo_lightly-master
 
@@ -56,10 +62,10 @@ COPY ./entrypoint.sh /
 COPY ./odoo.conf /etc/odoo/
 
 # create fdfs client config folder
-RUN mkdir -p /etc/fdfs/client \
-COPY ./client.conf /etc/fdfs/client/
+RUN mkdir -p /etc/fdfs/
+COPY ./client.conf /etc/fdfs/
 
-RUN useradd -m -d /va/lib/odoo -s /bin/false -u 104 -g www-data odoo
+RUN useradd -m -d /var/lib/odoo -s /bin/false -u 104 -g www-data odoo
 RUN mkdir -p /var/odoo \
 	&& chown -R odoo:www-data /var/odoo \ 
     && mv odoo_10_dev_lightly/addons /var/odoo/ \
