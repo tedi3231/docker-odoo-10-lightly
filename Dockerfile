@@ -65,23 +65,23 @@ COPY ./odoo.conf /etc/odoo/
 RUN mkdir -p /etc/fdfs/
 COPY ./client.conf /etc/fdfs/
 
-RUN useradd -m -d /var/lib/odoo -s /bin/false -u 104 -g www-data odoo
-RUN mkdir -p /var/odoo \
-	&& chown -R odoo:www-data /var/odoo \ 
-    && mv odoo_10_dev_lightly/addons /var/odoo/ \
-	&& chown -R odoo:www-data /var/odoo \
-	&& chmod 0750 /var/odoo \
-	&& rm -rf odoo_10_dev_lightly
+RUN addgroup --system odoo
+RUN adduser --system --no-create-home --ingroup odoo odoo
+RUN mkdir -p /var/lib/odoo
+RUN mv odoo_10_dev_lightly/addons /var/lib/odoo/ 
+#RUN chmod -R 0777 /var/lib/odoo 
+RUN chown -R odoo:odoo /var/lib/odoo 
+RUN rm -rf odoo_10_dev_lightly
 
 RUN chown odoo:www-data /etc/odoo/odoo.conf \
-	&& chown 0640 /etc/odoo/odoo.conf
+	&& chmod -R 0640 /etc/odoo/odoo.conf
 # set fdfs client config permision
-RUN chown odoo:www-data /etc/fdfs/client.conf \
-	&& chown 0640 /etc/fdfs/client.conf
+RUN chown odoo:odoo /etc/fdfs/client.conf \
+	&& chmod -R 0640 /etc/fdfs/client.conf
 
 # Mount /var/lib/odoo to allow restoring filestore and /mnt/extra-addons for users addons
 RUN mkdir -p /mnt/extra-addons \
-        && chown -R odoo:www-data /mnt/extra-addons
+        && chown -R odoo:odoo /mnt/extra-addons
 VOLUME ["/var/lib/odoo", "/mnt/extra-addons"]
 
 # Expose Odoo services
