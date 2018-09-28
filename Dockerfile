@@ -29,6 +29,10 @@ RUN	apt-get update \
     && apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false -o APT::AutoRemove::SuggestsImportant=false npm \
     && rm -rf /var/lib/apt/lists/* wkhtmltox.deb 
 
+# 安装中文字体
+RUN apt-get install ttf-wqy-microhei \
+    && apt-get install ttf-wqy-zenhei
+
 # Install Odoo
 # RUN curl -o odoo.zip -SL https://github.com/tedi3231/odoo_lightly/archive/master.zip \
 #        && unzip -q odoo.zip 
@@ -37,6 +41,13 @@ RUN curl -o odoo.zip -SL https://gitee.com/tyibs/odoo_10_dev_lightly/repository/
 
 RUN pip install wdb  odoo_10_dev_lightly/  \
 	&& rm -rf odoo.zip  
+
+# 安装FDFS客户端驱动
+RUN curl -o fdfs.zip -SL https://gitee.com/tyibs/fdfs_client/repository/archive/master.zip \
+        && unzip -q fdfs.zip 
+RUN python fdfs_client/setup.py install \
+    && rm -rf fdfs_client \
+    && rm -rf fdfs.zip
 #	&& rm -rf odoo_lightly-master
 
 # RUN apt-get install -y --no-install-recommends ttf-wqy-zenhei ttf-wqy-microhei
@@ -45,7 +56,11 @@ RUN pip install wdb  odoo_10_dev_lightly/  \
 COPY ./entrypoint.sh /
 COPY ./odoo.conf /etc/odoo/
 
-RUN useradd -m -d /var/lib/odoo -s /bin/false -u 104 -g www-data odoo
+# create fdfs client config folder
+RUN mkdir -p /etc/fdfs/client \
+COPY ./client.conf /etc/fdfs/client/
+
+RUN useradd -m -d /va/lib/odoo -s /bin/false -u 104 -g www-data odoo
 RUN mkdir -p /var/odoo \
 	&& chown -R odoo:www-data /var/odoo \ 
     && mv odoo_10_dev_lightly/addons /var/odoo/ \
@@ -55,6 +70,9 @@ RUN mkdir -p /var/odoo \
 
 RUN chown odoo:www-data /etc/odoo/odoo.conf \
 	&& chown 0640 /etc/odoo/odoo.conf
+# set fdfs client config permision
+RUN chown odoo:www-data /etc/fdfs/client.conf \
+	&& chown 0640 /etc/fdfs/client.conf
 
 # Mount /var/lib/odoo to allow restoring filestore and /mnt/extra-addons for users addons
 RUN mkdir -p /mnt/extra-addons \
