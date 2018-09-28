@@ -30,8 +30,7 @@ RUN	apt-get update \
     && rm -rf /var/lib/apt/lists/* wkhtmltox.deb 
 
 # 安装中文字体
-RUN apt-get install ttf-wqy-microhei \
-    && apt-get install ttf-wqy-zenhei
+RUN apt-get install -y --no-install-recommends ttf-wqy-microhei ttf-wqy-zenhei
 
 # Install Odoo
 # RUN curl -o odoo.zip -SL https://github.com/tedi3231/odoo_lightly/archive/master.zip \
