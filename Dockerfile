@@ -12,7 +12,8 @@ RUN apt-get install -y --no-install-recommends build-essential libsasl2-dev libl
 	&& pip install redis \
 	&& pip install rabbitmq \
 	&& pip install celery \
-	&& pip install pika
+	&& pip install pika \
+	&& pip install dicttoxml
 
 RUN apt-get install unzip 
 # 安装FDFS客户端驱动
@@ -37,8 +38,12 @@ RUN rm -rf /usr/lib/python2.7/dist-packages/odoo/addons \
 #RUN ls -al /usr/lib/python2.7/dist-packages/odoo/addons 
 # 添加中文字体
 # RUN apt-get install -y --no-install-recommends ttf-wqy-microhei ttf-wqy-zenhei
-ADD wqy-microhei.ttc /var/lib/odoo/.fonts/
+# ADD wqy-microhei.ttc /var/lib/odoo/.fonts/
+WORKDIR /usr/share/fonts
+ADD zh_CN.zip ./
+RUN unzip zh_CN.zip -d ./zh_CN && fc-cache zh_CN
 
+WORKDIR /
 # create fdfs client config folder
 RUN mkdir -p /etc/fdfs/
 COPY ./client.conf /etc/fdfs/
@@ -48,4 +53,5 @@ RUN rm -rf odoo_10_dev_lightly
 RUN chown odoo:odoo /etc/fdfs/client.conf \
 	&& chmod -R 0640 /etc/fdfs/client.conf
 RUN chown odoo:odoo /usr/lib/python2.7/dist-packages/odoo/addons
+RUN chown -R odoo:odoo /var/lib/odoo
 USER odoo
