@@ -41,7 +41,7 @@ RUN rm -rf /usr/lib/python2.7/dist-packages/odoo/addons \
 # ADD wqy-microhei.ttc /var/lib/odoo/.fonts/
 WORKDIR /usr/share/fonts
 ADD zh_CN.zip ./
-RUN unzip zh_CN.zip -d ./zh_CN && fc-cache zh_CN
+RUN unzip zh_CN.zip -d ./zh_CN && fc-cache zh_CN && rm -f zh_CN.zip
 
 WORKDIR /
 # create fdfs client config folder
