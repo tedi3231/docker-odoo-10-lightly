@@ -53,5 +53,5 @@ RUN rm -rf odoo_10_dev_lightly
 RUN chown odoo:odoo /etc/fdfs/client.conf \
 	&& chmod -R 0640 /etc/fdfs/client.conf
 RUN chown odoo:odoo /usr/lib/python2.7/dist-packages/odoo/addons \
-        && chown -R odoo:odoo /var/lib/odoo
+        && chown odoo:odoo /var/lib/odoo
 USER odoo
